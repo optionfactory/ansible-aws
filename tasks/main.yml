@@ -14,9 +14,12 @@
   apt:
     name: "{{ item }}"
     state: present
+    update_cache: yes
   with_items:
     - apt-transport-https
     - ca-certificates
+    - software-properties-common
+    - curl
     - ntp
     - rsync
     - python-pip
