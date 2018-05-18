@@ -41,6 +41,14 @@
     name: ntp
     state: started
     enabled: yes
+- name: ensure apt update/upgrade timer is disabled
+  service:
+    name: "{{ item }}"
+    state: stopped
+    enabled: no
+  with_items:
+    - apt-daily.timer
+    - apt-daily-upgrade.timer
 - name: install PS1
   copy:
     dest: /etc/profile.d/ps1.sh
