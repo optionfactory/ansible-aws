@@ -36,6 +36,12 @@
     regexp: '^ *RateLimitInterval='
     line: 'RateLimitInterval=1s'
   notify: "restart journald"
+- name: journald do not forward to Syslog
+  lineinfile:
+    dest: /etc/systemd/journald.conf
+    regexp: '^ *ForwardToSyslog='
+    line: 'ForwardToSyslog=no'
+  notify: "restart journald"
 - name: ensure ntp is started
   service:
     name: ntp
