@@ -11,18 +11,17 @@
     regexp: '^#?ATTR\{\[dmi/id\]sys_vendor\}=="Xen", GOTO="vm_hotadd_apply".*$'
     state: present
 - name: install things
+  when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int < 20
   apt:
-    name: "{{ item }}"
+    name: ['apt-transport-https', 'ca-certificates', 'software-properties-common', 'curl', 'ntp', 'rsync', 'python-pip']
     state: present
     update_cache: yes
-  with_items:
-    - apt-transport-https
-    - ca-certificates
-    - software-properties-common
-    - curl
-    - ntp
-    - rsync
-    - python-pip
+- name: install things (ubuntu 20)
+  when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int >= 20
+  apt:
+    name: ['apt-transport-https', 'ca-certificates', 'software-properties-common', 'curl', 'ntp', 'rsync', 'python3-pip']
+    state: present
+    update_cache: yes
 - name: make journald persistent (/var/log/journal)
   file:
     dest: "/var/log/journal"
