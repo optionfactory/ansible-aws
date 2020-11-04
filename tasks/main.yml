@@ -10,7 +10,7 @@
     line: '#ATTR{[dmi/id]sys_vendor}=="Xen", GOTO="vm_hotadd_apply" # AWS kswapd high cpu usage workaround https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1518457/comments/69'
     regexp: '^#?ATTR\{\[dmi/id\]sys_vendor\}=="Xen", GOTO="vm_hotadd_apply".*$'
     state: present
-- name: install things
+- name: install things (ubuntu < 20)
   apt:
     name: "{{ item }}"
     state: present
@@ -23,6 +23,21 @@
     - ntp
     - rsync
     - python-pip
+  when: ansible_distribution == 'Ubuntu' && ansible_distribution_major_version|int < 20
+- name: install things (ubuntu 20)
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - apt-transport-https
+    - ca-certificates
+    - software-properties-common
+    - curl
+    - ntp
+    - rsync
+    - python3-pip
+  when: ansible_distribution == 'Ubuntu' && ansible_distribution_major_version|int >= 20
 - name: make journald persistent (/var/log/journal)
   file:
     dest: "/var/log/journal"
