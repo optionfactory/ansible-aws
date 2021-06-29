@@ -13,13 +13,13 @@
 - name: install things
   when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int < 20
   apt:
-    name: ['apt-transport-https', 'ca-certificates', 'software-properties-common', 'curl', 'ntp', 'rsync', 'python-pip']
+    name: ['apt-transport-https', 'ca-certificates', 'software-properties-common', 'curl', 'ntp', 'rsync', 'python-pip', 'net-tools', 'ngrep']
     state: present
     update_cache: yes
 - name: install things (ubuntu 20)
   when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int >= 20
   apt:
-    name: ['apt-transport-https', 'ca-certificates', 'software-properties-common', 'curl', 'ntp', 'rsync', 'python3-pip']
+    name: ['apt-transport-https', 'ca-certificates', 'software-properties-common', 'curl', 'ntp', 'rsync', 'python3-pip', 'net-tools', 'ngrep']
     state: present
     update_cache: yes
 - name: make journald persistent (/var/log/journal)
